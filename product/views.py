@@ -15,7 +15,7 @@ from rest_framework.response import Response
 
 def home(request):
     products = Product.objects.all()  # Fetch products for template rendering
-    return render(request, 'template/base.html', {'products': products})
+    return render(request,'base.html', {'products': products})
 
 class ProductCategoryView(viewsets.ViewSet):
     def list(self, request):
