@@ -3,6 +3,12 @@ from rest_framework import generics, viewsets
 from .serializations import *
 from .models import * 
 from rest_framework.response import Response
+from django.contrib.auth import get_user_model
+from rest_framework.views import APIView
+from django.contrib.auth import authenticate
+from rest_framework.status import HTTP_401_UNAUTHORIZED
+
+user = get_user_model()
 
 
 
@@ -11,6 +17,22 @@ from rest_framework.response import Response
 # class ProductCategoryView(generics.ListAPIView):
 #     queryset = ProductCategory.objects.all()
 #    serializer_class = ProductCategorySerialization
+
+class RegisterView(generics.CreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = RegisterSerializer
+
+class LoginView(APIView):
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(username=username, password=password)
+        if user:
+            return Response(
+                "Success login"
+            )
+        else:
+            return Response({"error": "Wrong credentials"}, status=HTTP_401_UNAUTHORIZED)
 
 
 def home(request):

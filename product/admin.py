@@ -20,3 +20,4 @@ class ContactDetails(admin.ModelAdmin):
 admin.site.register(Contact, ContactDetails)
 admin.site.register(ProductCategory, ProductCategoryDetails)
 admin.site.register(Product, ProductDetails)
+admin.site.register(CustomUser)

@@ -1,6 +1,40 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser, Permission, Group
+from core import settings
 
+user = settings.AUTH_USER_MODEL
 # Create your models here.
+class CustomUser(AbstractUser):
+    username = models.CharField(max_length=255, unique=True)
+    email = models.EmailField(unique=True)
+  
+    created_at = models.DateTimeField(auto_now_add=True)
+    role = models.IntegerField(default=0)
+
+    groups = models.ManyToManyField(
+        Group,
+        related_name='charging_user_set',
+        blank=True,
+        help_text=('The groups this user belongs to. A user will get all permissions '
+                   'granted to each of their groups.'),
+        verbose_name=('groups'),
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='charging_user_set',
+        blank=True,
+        help_text=('Specific permissions for this user.'),
+        verbose_name=('user_permissions'),
+    )
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
+    def __str__(self):
+        return self.email
+
+
 
 class ProductCategory(models.Model):
     category_name = models.CharField(max_length=255)  
@@ -32,3 +66,6 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{self.first_name}{self.last_name}"
+    
+
+    

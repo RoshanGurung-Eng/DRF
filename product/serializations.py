@@ -1,5 +1,22 @@
 from rest_framework import serializers
 from .models import *
+from django.contrib.auth import get_user_model
+
+class RegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = user
+        fields = ('id','username', 'email', 'password')
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
+
+        def create(self, validated_data):
+            user = user.objects.create_user(
+                username =validated_data['username'],
+                email = validated_data['email'],
+                password = validated_data['password'] 
+            )
+
 
 class ProductCategorySerialization(serializers.ModelSerializer):
     class Meta:
@@ -18,3 +35,8 @@ class ContactSerialization(serializers.ModelSerializer):
     class Meta:
         model = Contact
         fields = ['id', 'phone', 'email']
+
+class CustomUserSerialization(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id','username', ' email', ]
