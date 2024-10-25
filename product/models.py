@@ -68,4 +68,12 @@ class Contact(models.Model):
         return f"{self.first_name}{self.last_name}"
     
 
+class Order(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
+    quantity = models.IntegerField(default=0)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
+    orderStatus = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
     
+    def __str__(self):
+        return f"self.user.username"

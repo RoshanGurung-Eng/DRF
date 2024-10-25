@@ -8,6 +8,7 @@ from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from rest_framework.status import HTTP_401_UNAUTHORIZED
 
+
 user = get_user_model()
 
 
@@ -22,25 +23,36 @@ class RegisterView(generics.CreateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = RegisterSerializer
 
+#from rest_framework_simplejwt import RefreshToken
+
 class LoginView(APIView):
     def post(self, request):
-        username = request.data.get('username')
+        email=request.data.get('email')
         password = request.data.get('password')
-        user = authenticate(username=username, password=password)
+        user = authenticate(request,email=email, password=password)
         if user:
+            refresh = RefreshToken.for_user(user)
             return Response(
-                "Success login"
+                {
+                    "role": user.role,
+                    "email": email,
+                    "refresh": str(refresh),
+                    "access":str(refresh.access_token),
+                    "success": "Successful login",
+                 
+                 },
+                
             )
         else:
             return Response({"error": "Wrong credentials"}, status=HTTP_401_UNAUTHORIZED)
 
 
 def home(request):
-    products = Product.objects.all()  # Fetch products for template rendering
+    products = Product.objects.all()  
     return render(request,'base.html', {'products': products})
 
 class ProductCategoryView(viewsets.ViewSet):
-    def list(self, request):
+    def list(self):
        queryset = ProductCategory.objects.all()
        serializer = ProductCategorySerialization(queryset, many=True)
        return Response(serializer.data)
@@ -83,3 +95,26 @@ class ContactCreateView(generics.CreateAPIView):
 class ContactDestroyView(generics.DestroyAPIView):
     queryset = Contact.objects.all()
     serializer_class = ContactSerialization
+
+
+#For Order
+
+class OrderView(generics.CreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerialization
+    
+class OrderCreateView(generics.CreateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerialization
+
+class OrderGetView(generics.ListAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerialization
+
+class OrderUpdateView(generics.UpdateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerialization
+
+class OrderDestroyView(generics.DestroyAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerialization
