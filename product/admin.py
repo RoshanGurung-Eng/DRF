@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 # Register your models here.
 class ProductCategoryDetails(admin.ModelAdmin):
-    list_display = ['category_name','category_img', 'created_at']
+    list_display = ['id','category_name','category_img', 'created_at']
     search_fields = ['category_name']
 
 class ProductDetails(admin.ModelAdmin):
@@ -14,10 +14,11 @@ class ProductDetails(admin.ModelAdmin):
 class ContactDetails(admin.ModelAdmin):
     list_display = ['first_name', 'last_name', 'email', 'phone',
     'message', 'created_at']
-    search_fields = ['first_name', 'last_name']
-    list_filter = ['created_at']
 
 admin.site.register(Contact, ContactDetails)
 admin.site.register(ProductCategory, ProductCategoryDetails)
 admin.site.register(Product, ProductDetails)
 admin.site.register(CustomUser)
+admin.site.register(Order)
+admin.site.register(esewaPayment)
+
