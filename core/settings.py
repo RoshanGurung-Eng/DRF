@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     "corsheaders",
 ]
 
@@ -151,6 +152,11 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS= True
+
+SIMPLE_JWT = {
+    'BLACKLIST_AFTER_ROTATION': True,
+    
+}
 
 
 JAZZMIN_SETTINGS = {
@@ -287,3 +293,8 @@ JAZZMIN_SETTINGS = {
     # override change forms on a per modeladmin basis
     "changeform_format_overrides": {"auth.user": "collapsible", "auth.group": "vertical_tabs"},
 }
+ESEWA_PAYMENT_URL = 'https://uat.esewa.com.np/epay/main'
+ESEWA_MERCHANT_ID = 'EPAYTEST'
+ESEWA_SECRET_KEY = '2d3d5b6e-3d9d-4a4f-bd3d-5b6e3d9d4a4f'
+ESEWA_SUCCESS_URL = 'http://127.0.0.1:8000/esewa/success'
+ESEWA_FAILED_URL = 'http://127.0.0.1:8000/esewa/failed'

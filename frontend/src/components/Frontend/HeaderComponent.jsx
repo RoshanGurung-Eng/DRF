@@ -146,4 +146,4 @@ export function HeaderComponent() {
     </Navbar>
   );
 }
-export default FrontendMain
+
